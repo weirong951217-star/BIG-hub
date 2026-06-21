@@ -5,42 +5,42 @@ import gradio as gr
 os.system("fuser -k 7860/tcp >/dev/null 2>&1")
 
 # ==========================================
-# 🎨 全新現代化毛玻璃 (Glassmorphism) 介面設計
+# 🎨 現代化毛玻璃 (Glassmorphism) 介面設計升級版
 # ==========================================
 css = """
     /* 清除預設底色，使用極簡科技灰底 */
     body, html, .gradio-container, .wrap, main {
-        background-color: #f4f5f7 !important;
+        background-color: #f8fafc !important;
         padding: 0 !important;
         margin: 0 !important;
         max-width: 100% !important;
         font-family: 'PingFang TC', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif !important;
     }
     
-    body.dark { background-color: #f4f5f7 !important; }
+    body.dark { background-color: #f8fafc !important; }
     footer { display: none !important; }
 
-    /* 背景動態模糊光暈，增加科技感 */
+    /* 背景動態模糊光暈，增加質感與科技感 */
     .hub-wrapper {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         min-height: 100vh;
-        padding: 3rem 1.5rem;
+        padding: 4rem 1.5rem;
         position: relative;
         overflow: hidden;
     }
     .blob {
         position: absolute;
         border-radius: 50%;
-        filter: blur(80px);
+        filter: blur(90px);
         z-index: 0;
-        opacity: 0.5;
-        animation: float 10s infinite ease-in-out;
+        opacity: 0.6;
+        animation: float 12s infinite ease-in-out;
     }
-    .blob-1 { top: -10%; left: -10%; width: 400px; height: 400px; background: #c7d2fe; }
-    .blob-2 { bottom: -10%; right: -10%; width: 500px; height: 500px; background: #fbcfe8; animation-delay: -5s; }
+    .blob-1 { top: -5%; left: -5%; width: 450px; height: 450px; background: #c7d2fe; }
+    .blob-2 { bottom: -5%; right: -5%; width: 550px; height: 550px; background: #fbcfe8; animation-delay: -6s; }
 
     /* 主視覺內容層 */
     .content-layer {
@@ -52,28 +52,35 @@ css = """
 
     /* 頂部系統狀態標籤 */
     .meta-tag {
-        display: inline-block;
-        background: rgba(255, 255, 255, 0.6);
-        border: 1px solid rgba(255, 255, 255, 0.8);
-        backdrop-filter: blur(10px);
-        padding: 8px 20px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(12px);
+        padding: 8px 24px;
         border-radius: 30px;
-        font-size: 13px;
+        font-size: 14px;
         font-weight: 700;
-        color: #4b5563;
+        color: #475569;
         margin-bottom: 24px;
         letter-spacing: 1px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.03);
     }
 
-    /* 巨大的漸層主標題 */
+    /* 漸層主標題與排版 */
     .main-title {
-        font-size: clamp(3rem, 6vw, 4.5rem);
+        font-size: clamp(2.5rem, 5vw, 4rem);
         font-weight: 900;
-        color: #111827;
-        letter-spacing: -2px;
-        margin: 0 0 10px 0;
-        line-height: 1.1;
+        color: #1e293b;
+        letter-spacing: -1px;
+        margin: 0 0 12px 0;
+        line-height: 1.2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
     }
     .main-title span {
         background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
@@ -81,9 +88,9 @@ css = """
         -webkit-text-fill-color: transparent;
     }
     .sub-title {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         font-weight: 600;
-        color: #6b7280;
+        color: #64748b;
         margin-bottom: 60px;
         letter-spacing: 2px;
     }
@@ -91,22 +98,22 @@ css = """
     /* 專案卡片網格佈局 */
     .card-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 30px;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 32px;
         margin-top: 20px;
     }
 
     /* 獨立專案卡片設計 */
     .module-card {
-        background: rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.9);
-        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(24px);
+        border: 1px solid rgba(255, 255, 255, 1);
+        border-radius: 28px;
         padding: 40px 30px;
         text-decoration: none !important;
         color: inherit !important;
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+        box-shadow: 0 10px 40px rgba(0,0,0,0.03);
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -118,13 +125,13 @@ css = """
         position: absolute;
         top: 0; left: 0;
         width: 100%; height: 100%;
-        background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%);
+        background: linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 100%);
         opacity: 0;
         transition: opacity 0.4s;
     }
     .module-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.06);
         border-color: rgba(255,255,255,1);
     }
     .module-card:hover::before { opacity: 1; }
@@ -134,21 +141,21 @@ css = """
         font-size: 3.5rem;
         margin-bottom: 20px;
         display: inline-block;
-        transition: transform 0.3s;
+        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     .module-card:hover .card-icon {
-        transform: scale(1.1) rotate(5deg);
+        transform: scale(1.15) rotate(5deg);
     }
     .card-title {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
         font-weight: 900;
-        color: #1f2937;
+        color: #0f172a;
         margin: 0 0 12px 0;
     }
     .card-desc {
         font-size: 0.95rem;
-        color: #6b7280;
-        font-weight: 600;
+        color: #475569;
+        font-weight: 500;
         line-height: 1.6;
         margin: 0;
     }
@@ -156,19 +163,18 @@ css = """
     /* 連線中 - 動態狀態燈號 */
     .status-badge {
         position: absolute;
-        top: 20px; right: 20px;
-        font-size: 11px;
-        font-weight: 800;
-        padding: 5px 12px;
+        top: 24px; right: 24px;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 6px 14px;
         border-radius: 20px;
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 8px;
         letter-spacing: 1px;
-    }
-    .status-badge.online {
-        background: #ecfdf5;
+        background: rgba(236, 253, 245, 0.8);
         color: #059669;
+        border: 1px solid rgba(16, 185, 129, 0.2);
     }
     .status-dot {
         width: 6px; height: 6px;
@@ -196,28 +202,28 @@ html_content = """
     <div class="blob blob-2"></div>
     
     <div class="content-layer">
-        <div class="meta-tag">✨ 元智工管 AI 系統入口網 ‧ 伺服器已連線</div>
+        <div class="meta-tag">✨ 系統入口網 ‧ 伺服器已連線</div>
         
-        <h1 class="main-title">YZU IEM <span>AI PORTAL</span></h1>
-        <div class="sub-title">人工智慧應用與資料分析中心</div>
+        <h1 class="main-title">🏀 <span>多功能智慧分析與推薦平台</span></h1>
+        <div class="sub-title">全方位數據解析與個人化媒合中心</div>
         
         <div class="card-grid">
             <a href="https://sport-fnqo.onrender.com" target="_blank" class="module-card">
-                <div class="status-badge online"><div class="status-dot"></div>連線中</div>
-                <span class="card-icon">⚽</span>
+                <div class="status-badge"><div class="status-dot"></div>連線中</div>
+                <span class="card-icon">🏀</span>
                 <h2 class="card-title">體育賽事分析</h2>
-                <p class="card-desc">運用隨機森林模型與泊松分配，精準預測 NBA 與歐洲足球五大聯賽賽況勝率。</p>
+                <p class="card-desc">運用隨機森林模型與卜瓦松分配，精準預測 NBA 與歐洲足球五大聯賽賽況勝率。</p>
             </a>
             
             <a href="https://education-ly5g.onrender.com" target="_blank" class="module-card">
-                <div class="status-badge online"><div class="status-dot"></div>連線中</div>
+                <div class="status-badge"><div class="status-dot"></div>連線中</div>
                 <span class="card-icon">📚</span>
                 <h2 class="card-title">專題教授推薦</h2>
                 <p class="card-desc">透過學術性向測驗與先修門檻評估，為您精準匹配最佳指導教授陣容。</p>
             </a>
             
             <a href="https://music-2-q940.onrender.com" target="_blank" class="module-card">
-                <div class="status-badge online"><div class="status-dot"></div>連線中</div>
+                <div class="status-badge"><div class="status-dot"></div>連線中</div>
                 <span class="card-icon">🎧</span>
                 <h2 class="card-title">情境音樂調音</h2>
                 <p class="card-desc">結合環境變數與心理期望狀態，自上萬首曲庫中萃取出專屬您的靈魂歌單。</p>
@@ -227,7 +233,7 @@ html_content = """
 </div>
 """
 
-with gr.Blocks(css=css, title="YZU IEM AI Portal") as demo:
+with gr.Blocks(css=css, title="多功能智慧分析與推薦平台") as demo:
     gr.HTML(html_content)
 
 # 自動抓取 PORT 並允許對外連線

@@ -5,7 +5,7 @@ import gradio as gr
 os.system("fuser -k 7860/tcp >/dev/null 2>&1")
 
 # ==========================================
-# 🎨 現代化毛玻璃 (Glassmorphism) 介面設計升級版
+# 🎨 現代化毛玻璃 (Glassmorphism) 介面設計 - 最終精簡版
 # ==========================================
 css = """
     /* 清除預設底色，使用極簡科技灰底 */
@@ -20,7 +20,7 @@ css = """
     body.dark { background-color: #f8fafc !important; }
     footer { display: none !important; }
 
-    /* 背景動態模糊光暈，增加質感與科技感 */
+    /* 背景動態模糊光暈 */
     .hub-wrapper {
         display: flex;
         flex-direction: column;
@@ -63,47 +63,34 @@ css = """
         font-size: 14px;
         font-weight: 700;
         color: #475569;
-        margin-bottom: 24px;
+        margin-bottom: 40px; /* 增加與標題的距離 */
         letter-spacing: 1px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.03);
     }
 
-    /* 漸層主標題與排版 */
+    /* 漸層主標題 (已移除左側籃球) */
     .main-title {
         font-size: clamp(2.5rem, 5vw, 4rem);
         font-weight: 900;
         color: #1e293b;
         letter-spacing: -1px;
-        margin: 0 0 12px 0;
+        margin: 0 0 80px 0; /* 標題下方直接接卡片 */
         line-height: 1.2;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 12px;
-        flex-wrap: wrap;
     }
     .main-title span {
         background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
-    .sub-title {
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: #64748b;
-        margin-bottom: 60px;
-        letter-spacing: 2px;
-    }
 
-    /* 專案卡片網格佈局 */
+    /* 專案卡片網格 */
     .card-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
         gap: 32px;
-        margin-top: 20px;
     }
 
-    /* 獨立專案卡片設計 */
+    /* 獨立專案卡片 */
     .module-card {
         background: rgba(255, 255, 255, 0.65);
         backdrop-filter: blur(24px);
@@ -120,23 +107,12 @@ css = """
         position: relative;
         overflow: hidden;
     }
-    .module-card::before {
-        content: '';
-        position: absolute;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        background: linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 100%);
-        opacity: 0;
-        transition: opacity 0.4s;
-    }
     .module-card:hover {
         transform: translateY(-8px);
         box-shadow: 0 20px 40px rgba(0,0,0,0.06);
-        border-color: rgba(255,255,255,1);
     }
-    .module-card:hover::before { opacity: 1; }
 
-    /* 卡片內容細節 */
+    /* 卡片內容細節 (體育卡片會呈現雙球圖案) */
     .card-icon {
         font-size: 3.5rem;
         margin-bottom: 20px;
@@ -160,7 +136,7 @@ css = """
         margin: 0;
     }
 
-    /* 連線中 - 動態狀態燈號 */
+    /* 狀態燈號 */
     .status-badge {
         position: absolute;
         top: 24px; right: 24px;
@@ -171,7 +147,6 @@ css = """
         display: flex;
         align-items: center;
         gap: 8px;
-        letter-spacing: 1px;
         background: rgba(236, 253, 245, 0.8);
         color: #059669;
         border: 1px solid rgba(16, 185, 129, 0.2);
@@ -180,11 +155,9 @@ css = """
         width: 6px; height: 6px;
         background-color: #10b981;
         border-radius: 50%;
-        box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
         animation: pulse 2s infinite;
     }
 
-    /* 動畫設定 */
     @keyframes float {
         0%, 100% { transform: translateY(0) scale(1); }
         50% { transform: translateY(-20px) scale(1.05); }
@@ -204,13 +177,12 @@ html_content = """
     <div class="content-layer">
         <div class="meta-tag">✨ 系統入口網 ‧ 伺服器已連線</div>
         
-        <h1 class="main-title">🏀 <span>多功能智慧分析與推薦平台</span></h1>
-        <div class="sub-title">全方位數據解析與個人化媒合中心</div>
+        <h1 class="main-title"><span>多功能智慧分析與推薦平台</span></h1>
         
         <div class="card-grid">
             <a href="https://sport-fnqo.onrender.com" target="_blank" class="module-card">
                 <div class="status-badge"><div class="status-dot"></div>連線中</div>
-                <span class="card-icon">🏀</span>
+                <span class="card-icon">🏀⚽</span>
                 <h2 class="card-title">體育賽事分析</h2>
                 <p class="card-desc">運用隨機森林模型與卜瓦松分配，精準預測 NBA 與歐洲足球五大聯賽賽況勝率。</p>
             </a>
@@ -236,6 +208,6 @@ html_content = """
 with gr.Blocks(css=css, title="多功能智慧分析與推薦平台") as demo:
     gr.HTML(html_content)
 
-# 自動抓取 PORT 並允許對外連線
+# 自動抓取 PORT
 port = int(os.environ.get("PORT", 7860))
 demo.launch(server_name="0.0.0.0", server_port=port)
